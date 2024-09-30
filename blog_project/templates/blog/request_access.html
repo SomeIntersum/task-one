@@ -1,0 +1,12 @@
+<!-- templates/blog/request_access.html -->
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Запрос на доступ к посту</h1>
+<p>Вы хотите запросить доступ к посту "{{ post.title }}"?</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Запросить доступ</button>
+</form>
+<a href="{% url 'home' %}">Назад на главную</a>
+{% endblock %}

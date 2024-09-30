@@ -1,0 +1,20 @@
+{% load static %}
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="{% url 'public_posts' %}">Публичные посты</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'my_posts' %}">my_posts</a></li>
+                <li><a href="{% url 'manage_requests' %}">manage_requests</a></li>
+                <li><a href="{% url 'user_list' %}">Пользователи</a></li>
+                <li><a href="{% url 'create_post' %}">Создать пост</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+            {% else %}
+                <li><a href="{% url 'login_page' %}">Войти</a></li>
+                <li><a href="{% url 'register' %}">Регистрация</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

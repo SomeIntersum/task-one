@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Мои посты</h1>
+
+{% if posts %}
+    <ul class="post-list">
+        {% for post in posts %}
+        <li class="post-item">
+            <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+            <small>{{ post.created_at }}</small>
+            <a href="{% url 'edit_post' post.id %}">Редактировать</a>
+            <a href="{% url 'delete_post' post.id %}" onclick="return confirm('Вы уверены, что хотите удалить этот пост?');">Удалить</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>У вас нет постов.</p>
+{% endif %}
+
+{% endblock %}

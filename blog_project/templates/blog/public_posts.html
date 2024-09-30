@@ -1,0 +1,23 @@
+<!-- templates/blog/public_posts.html -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Публичные посты</h1>
+
+{% if posts %}
+    <ul class="post-list">
+        {% for post in posts %}
+            <li class="post-item">
+                <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+                <p>{{ post.content|slice:":200" }}...</p>
+                <small>Автор: {{ post.author.username }} | {{ post.created_at }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Нет публичных постов для отображения.</p>
+{% endif %}
+
+<a href="{% url 'home' %}">Назад на главную</a>
+{% endblock %}

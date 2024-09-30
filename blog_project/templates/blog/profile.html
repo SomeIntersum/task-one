@@ -1,0 +1,9 @@
+<!-- templates/blog/profile.html -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Профиль пользователя {{ user.username }}</h1>
+<p>Здесь можно показать дополнительную информацию о пользователе.</p>
+<a href="{% url 'user_list' %}">Назад к списку пользователей</a>
+{% endblock %}

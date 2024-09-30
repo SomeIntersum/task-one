@@ -1,0 +1,28 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+
+<html lang="ru">
+
+{% include 'hhf/head.html' %}
+
+<body>
+
+
+{% include 'hhf/header.html' %}
+
+<main class="main">
+    {% block content %}
+
+    {% endblock %}
+</main>
+
+{% include 'hhf/footer.html' %}
+
+{% block js_script %}
+
+{% endblock %}
+
+</body>
+</html>

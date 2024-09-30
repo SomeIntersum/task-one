@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <small>Автор: {{ post.author.username }} | {{ post.created_at }}</small>
+    <a href="{% url 'home' %}">Назад</a>
+
+    {% if user.is_authenticated and user == post.author %}
+        <a href="{% url 'edit_post' post.id %}">Редактировать</a>
+        <a href="{% url 'delete_post' post.id %}"
+           onclick="return confirm('Вы уверены, что хотите удалить этот пост?');">Удалить</a>
+    {% endif %}
+
+    <!-- Комментарии -->
+    <h2>Комментарии</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <strong>{{ comment.author.username }}</strong> сказал:
+                <p>{{ comment.content }}</p>
+                <small>{{ comment.created_at }}</small>
+            </li>
+            {% empty %}
+            <li>Пока нет комментариев. Будьте первым!</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Форма добавления комментария -->
+    {% if user.is_authenticated %}
+        <h3>Оставить комментарий</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Добавить комментарий</button>
+        </form>
+    {% else %}
+        <p>Войдите, чтобы оставить комментарий.</p>
+    {% endif %}
+{% endblock %}

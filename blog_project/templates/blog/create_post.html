@@ -1,0 +1,14 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 class="cp_title">Создать новый пост</h1>
+
+    <form method="POST" class="cp_form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить пост</button>
+    </form>
+
+    <a href="{% url 'home' %}" class="cp_link">Назад на главную</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+<!-- templates/blog/user_list.html -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Пользователи</h1>
+<div class="user-list">
+    {% for user in users %}
+        <div class="user-card">
+            <h2>{{ user.username }}</h2>
+            <a href="{% url 'user_profile' user.id %}">Просмотреть профиль</a>
+            {% if user.id in subscriptions %}
+                <a href="{% url 'toggle_subscription' user.id %}" class="button">Отписаться</a>
+            {% else %}
+                <a href="{% url 'toggle_subscription' user.id %}" class="button">Подписаться</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

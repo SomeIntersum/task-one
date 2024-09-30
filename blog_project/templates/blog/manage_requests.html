@@ -1,0 +1,23 @@
+<!-- templates/blog/manage_requests.html -->
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Управление заявками на доступ</h1>
+{% if requests %}
+    <ul>
+        {% for access_request in requests %}
+        <li>
+            Заявка от {{ access_request.requester.username }} на пост "{{ access_request.post.title }}"
+            {% if not access_request.approved %}
+                <a href="{% url 'approve_request' access_request.id %}">Одобрить</a>
+            {% else %}
+                Одобрено
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Нет заявок на доступ.</p>
+{% endif %}
+<a href="{% url 'home' %}">Назад на главную</a>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Главная</h1>
+
+<!-- Форма для фильтрации постов по тегам -->
+<form method="get" action="{% url 'home' %}">
+    <select name="tag" onchange="this.form.submit()">
+        <option value="">Все теги</option>
+        {% for tag in tags %}
+            <option value="{{ tag.slug }}" {% if tag.slug == request.GET.tag %}selected{% endif %}>{{ tag.name }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<h2>Публичные посты</h2>
+<ul class="post-list">
+    {% for post in public_posts %}
+    <li class="post-item">
+        <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+        <small>{{ post.created_at }}</small>
+        <p>Теги:
+            {% for tag in post.tags.all %}
+                <a href="{% url 'home' %}?tag={{ tag.slug }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h2>Скрытые посты</h2>
+
+    <!-- Скрытые посты, к которым подана заявка и ожидается подтверждение -->
+    <h3>Ожидающие заявки скрытые посты</h3>
+    {% if hidden_posts_pending %}
+        <ul class="post-list">
+            {% for post in hidden_posts_pending %}
+            <li class="post-item">
+                <h3>{{ post.title }}</h3>
+                <small>{{ post.created_at }}</small>
+                <p>Запрос отправлен. Доступ ожидается.</p>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет ожидающих скрытых постов.</p>
+    {% endif %}
+
+    <!-- Скрытые посты, к которым пользователь уже получил доступ -->
+    <h3>Одобренные скрытые посты</h3>
+    {% if hidden_posts_approved %}
+        <ul class="post-list">
+            {% for post in hidden_posts_approved %}
+            <li class="post-item">
+                <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+                <small>{{ post.created_at }}</small>
+                <p>Теги:
+                    {% for tag in post.tags.all %}
+                        <a href="{% url 'home' %}?tag={{ tag.slug }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет одобренных скрытых постов.</p>
+    {% endif %}
+
+    <!-- Скрытые посты, к которым пользователь ещё не подавал заявку -->
+    <h3>Скрытые посты, к которым вы ещё не подавали заявку</h3>
+    {% if hidden_posts_not_requested %}
+        <ul class="post-list">
+            {% for post in hidden_posts_not_requested %}
+            <li class="post-item">
+                <h3>{{ post.title }}</h3>
+                <small>{{ post.created_at }}</small>
+                <a href="{% url 'request_access' post.id %}">Запросить доступ</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет скрытых постов, к которым вы не подавали заявку.</p>
+    {% endif %}
+{% else %}
+    <p>Войдите, чтобы увидеть скрытые посты.</p>
+{% endif %}
+
+{% endblock %}
